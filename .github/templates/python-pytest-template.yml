@@ -1,0 +1,46 @@
+# Template GitLab CI para projetos Python com pytest
+# Este arquivo pode ser incluído em outros pipelines usando:
+# include:
+#   - project: 'templates-repo'
+#     file: '/python-pytest-template.yml'
+
+stages:
+  - install
+  - test
+  - build
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+cache:
+  paths:
+    - .cache/pip
+
+install:
+  stage: install
+  image: python:3.10
+  script:
+    - python -m pip install --upgrade pip
+    - pip install -r requirements.txt
+  artifacts:
+    paths:
+      - .cache/pip
+
+test:
+  stage: test
+  image: python:3.10
+  script:
+    - pytest --maxfail=1 --disable-warnings -q
+  artifacts:
+    when: always
+    reports:
+      junit: pytest-report.xml
+
+build:
+  stage: build
+  image: python:3.10
+  script:
+    - python setup.py sdist bdist_wheel
+  artifacts:
+    paths:
+      - dist/

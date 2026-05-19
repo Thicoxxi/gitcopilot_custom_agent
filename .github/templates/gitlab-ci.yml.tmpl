@@ -1,0 +1,29 @@
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  GIT_STRATEGY: clone
+
+build:
+  stage: build
+  image: "{image}"
+  script:
+    - echo "Building {language} project"
+    - {build_command}
+
+test:
+  stage: test
+  image: "{image}"
+  script:
+    - echo "Running tests"
+    - {test_command}
+
+deploy:
+  stage: deploy
+  script:
+    - echo "Deploying to {env}"
+    - {deploy_command}
+  only:
+    - {deploy_branch}

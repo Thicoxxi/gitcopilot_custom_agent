@@ -1,0 +1,6 @@
+# Dependências principais
+python-dotenv==1.0.1
+openai==1.14.3
+
+# Dependências opcionais (úteis para desenvolvimento)
+requests==2.31.0
